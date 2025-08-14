@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsc --watch",
     "lint": "eslint src --ext .ts",
-    "format": "prettier --ignore-path .gitignore --write \"./src/ **/*.+(js|ts|json)\"",
+    "lint:fix": "npx eslint src --fix",
+    "prettier": "prettier --ignore-path .gitignore --write \"./src/**/*.+(js|ts|json)\"",
     "tsc": "tsc"
   },
   "keywords": [],
@@ -21,11 +22,16 @@
     "mongoose": "^8.17.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.33.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@typescript-eslint/eslint-plugin": "^8.39.1",
     "@typescript-eslint/parser": "^8.39.1",
     "eslint": "^9.33.0",
-    "typescript": "^5.9.2"
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^16.3.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.39.1"
   }
 }

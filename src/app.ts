@@ -1,17 +1,17 @@
-import type { Request, Response } from 'express'
-import express from 'express'
-import cors from 'cors'
-const app = express()
-const port = 3000
+import type { Application, Request, Response } from 'express';
+import express from 'express';
+import cors from 'cors';
+const app: Application = express();
 
-app.use(express.json())
-app.use(cors())
+app.use(express.json());
+app.use(cors());
 
-app.get('/', (req: Request, res:Response) => {
-  res.send('Hello World!')
-})
+app.get('/', (req: Request, res: Response) => {
+  const a = 10;
 
-console.log(process.cwd())
+  res.send('Hello World!');
 
+  res.send(a);
+});
 
 export default app;

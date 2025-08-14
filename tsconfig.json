@@ -1,17 +1,14 @@
 {
-    "include": ["src"], // which files to compile
-  "exclude": ["node_modules"], // which files to skip
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
-  
     // File Layout
     "rootDir": "./src",
     "outDir": "./dist",
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "ESNext",
-    "target": "ES2020",
+    "module": "CommonJS",
+    "target": "ES2021",
     "types": [],
     // For nodejs:
     // "lib": ["esnext"],
@@ -38,7 +35,7 @@
     // Recommended Options
     "strict": true,
     "jsx": "react-jsx",
-    "verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": false,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
@@ -46,6 +43,7 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
-
-  }
+  },
+  "include": ["src"], // which files to compile
+  "exclude": ["node_modules"] // which files to skip
 }
