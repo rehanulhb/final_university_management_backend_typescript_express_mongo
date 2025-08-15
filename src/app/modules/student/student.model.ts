@@ -82,3 +82,6 @@ const studentSchema = new Schema<Student>({
   profileImg: { type: String },
   isActive: ['active', 'blocked'],
 });
+
+//Student Model
+export const StudentModel = model<Student>('Student', studentSchema);
