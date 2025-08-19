@@ -1,4 +1,5 @@
 import { Schema, model, connect } from 'mongoose';
+import validator from 'validator';
 import {
   Guardian,
   LocalGuardian,
@@ -13,7 +14,7 @@ const userNameSchema = new Schema<UserName>({
     trim: true,
     maxlength: [20, 'First Name Cannot be more than 20 Characters'],
     validate: {
-      validator: function (value) {
+      validator: function (value: string) {
         const firstNameStr = value.charAt(0).toUpperCase() + value.slice(1);
         return firstNameStr === value;
       },
@@ -26,7 +27,10 @@ const userNameSchema = new Schema<UserName>({
   lastName: {
     type: String,
     required: [true, 'Last Name is Required'],
-    trim: true,
+    validate: {
+      validator: (value: string) => validator.isAlphanumeric(value),
+      message: '{VALUE} is not valid',
+    },
   },
 });
 
