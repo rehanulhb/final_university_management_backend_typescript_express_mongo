@@ -1,65 +1,56 @@
-import Joi from 'joi';
+import z from 'zod';
 
-const userNameValidationSchema = Joi.object({
-  firstName: Joi.string()
-    .trim()
-    .max(20)
-    .required()
-    .pattern(/^[A-Za-z]+$/, 'capitalize'),
-  middleName: Joi.string().trim(),
-  lastName: Joi.string()
-    .required()
-    .pattern(/^[A-Za-z]+$/),
+const userNameValidationchema = z.object({
+  firstName: z.string().min(1).max(20),
+  middleName: z.string().default(''),
+  lastName: z.string().min(1),
 });
 
 // Guardian Schema
-const guardianValidationSchema = Joi.object({
-  fatherName: Joi.string().required(),
-  fatherOccupation: Joi.string().required(),
-  fatherContactNo: Joi.string().required(),
-  motherName: Joi.string().required(),
-  motherOccupation: Joi.string().required(),
-  motherContactNo: Joi.string().required(),
+const guardianValidationSchema = z.object({
+  fatherName: z.string().min(1),
+  fatherOccupation: z.string().min(1),
+  fatherContactNo: z.string().min(1),
+  motherName: z.string().min(1),
+  motherOccupation: z.string().min(1),
+  motherContactNo: z.string().min(1),
 });
 
 // Local Guardian Schema
-const localGuardianValidationSchema = Joi.object({
-  name: Joi.string().required(),
-  occupation: Joi.string().required(),
-  contactNo: Joi.string().required(),
-  address: Joi.string().required(),
+const localGuardianValidationSchema = z.object({
+  name: z.string().min(1),
+  occupation: z.string().min(1),
+  contactNo: z.string().min(1),
+  address: z.string().min(1),
 });
 
 // Student Schema
-const studentValidationSchema = Joi.object({
-  id: Joi.string().required(),
-  name: userNameValidationSchema.required(),
-  gender: Joi.string().valid('male', 'female', 'other').required(),
-  dateOfBirth: Joi.string(),
+export const studentValidationSchema = z.object({
+  id: z.string().min(1),
 
-  email: Joi.string().email().required(),
+  name: userNameValidationchema,
 
-  contactNo: Joi.string().required(),
-  emergencyContactNo: Joi.string().required(),
-  bloodGroup: Joi.string().valid(
-    'A+',
-    'A-',
-    'B+',
-    'B-',
-    'AB+',
-    'AB-',
-    'O+',
-    'O-',
-  ),
-  presentAddress: Joi.string().required(),
-  permanentAddress: Joi.string().required(),
+  gender: z.enum(['male', 'female', 'other']),
 
-  guardian: guardianValidationSchema.required(),
-  localGuardian: localGuardianValidationSchema.required(),
+  dateOfBirth: z.string().default(''),
 
-  profileImg: Joi.string().uri().optional(),
+  email: z.string().email({ message: 'Invalid Email Format' }),
 
-  isActive: Joi.string().valid('active', 'blocked').default('active'),
+  contactNo: z.string().min(1),
+  emergencyContactNo: z.string().min(1),
+
+  bloodGroup: z
+    .enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'])
+    .optional(),
+  presentAddress: z.string().min(1),
+  permanentAddress: z.string().min(1),
+
+  guardian: guardianValidationSchema,
+  localGuardian: localGuardianValidationSchema,
+
+  profileImg: z.string().default(''),
+
+  isActive: z.enum(['active', 'blocked']).default('active'),
 });
 
 export default studentValidationSchema;
