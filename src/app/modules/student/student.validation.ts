@@ -28,6 +28,8 @@ const localGuardianValidationSchema = z.object({
 export const studentValidationSchema = z.object({
   id: z.string().min(1),
 
+  password: z.string().max(20),
+
   name: userNameValidationchema,
 
   gender: z.enum(['male', 'female', 'other']),
