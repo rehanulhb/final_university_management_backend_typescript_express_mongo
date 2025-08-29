@@ -1,7 +1,6 @@
 import { Schema, model, connect } from 'mongoose';
 import validator from 'validator';
 import {
-  StudentMethods,
   StudentModel,
   TGuardian,
   TLocalGuardian,
@@ -93,7 +92,6 @@ const studentSchema = new Schema<TStudent, StudentModel>({
   password: {
     type: String,
     required: [true, 'Password is required'],
-    unique: true,
     maxlength: [20, 'Password Cannot be more than 20 character'],
   },
 
@@ -157,12 +155,16 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     },
     default: 'active',
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 //Middle Pre save middleware/hook: will work on create() save()
 studentSchema.pre('save', async function (next) {
   // console.log(this, 'Pre Hook: we will save the data');
-  const user = this;
+  const user = this; //doc
 
   //Hasing Password and save into DB
   user.password = await bcrypt.hash(
@@ -173,8 +175,15 @@ studentSchema.pre('save', async function (next) {
 });
 
 //Post save Middleware/hook
-studentSchema.post('save', function () {
-  console.log(this, 'Post Hook: we saved our data');
+studentSchema.post('save', function (doc, next) {
+  doc.password = '';
+
+  next();
+});
+
+//Query Middleware
+studentSchema.pre('find', function (next) {
+  console.log(this);
 });
 
 //Creating a Custom static method
