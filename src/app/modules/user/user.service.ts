@@ -1,12 +1,36 @@
-const createStudentIntoDB = async (studentData: TStudent) => {
-  if (await Student.isUserExists(studentData.id)) {
-    throw new Error('User Already Exists');
+import config from '../../config';
+import { TStudent } from '../student/student.interface';
+import { NewUser } from './user.interface';
+import { User } from './user.model';
+
+const createStudentIntoDB = async (password: string, studentData: TStudent) => {
+  //Create a User object
+
+  const user: NewUser = {};
+
+  //if password is not given, use default password
+  user.password = password || config.default_password;
+
+  //set student role
+  user.role = 'student';
+
+  //set manually generated id
+  user.id = '2030100001';
+
+  //create a user
+
+  const result = await User.create(user); //Built in static method
+
+  // create a student
+  if (Object.keys(result).length) {
+    //set id , _id as user
+    studentData.id = result.id;
+    studentData.user = result._id;
   }
-  const result = await Student.create(studentData); //Built in static method
 
   return result;
 };
 
-export const UserService = {
+export const UserServices = {
   createStudentIntoDB,
 };
