@@ -2,18 +2,13 @@ import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { UserServices } from './user.service';
 import sendResponse from '../../utils/sendResponse';
 import status from 'http-status';
+import catchAsync from '../../utils/catchAsync';
 
-const createStudent: RequestHandler = async (req, res, next) => {
-  try {
+const createStudent= catchAsync(async (req, res) => {
+
     //Creating a schema validation using Zod
 
     const { password, student: studentData } = req.body;
-
-    //Data Validation using Joi
-    // const { error, value } = studentValidationSchema.validate(studentData);
-
-    //Data Validation using Zod
-    // const zodparsedData = studentValidationSchema.parse(studentData);
 
     const result = await UserServices.createStudentIntoDB(
       password,
@@ -26,10 +21,8 @@ const createStudent: RequestHandler = async (req, res, next) => {
       message: 'Student is Created Successfully',
       data: result,
     });
-  } catch (err) {
-    next(err);
-  }
-};
+  
+})
 
 export const UserControllers = {
   createStudent,
