@@ -1,6 +1,6 @@
 import z from 'zod';
 
-const userNameValidationchema = z.object({
+const userNameValidationSchema = z.object({
   firstName: z.string().min(1).max(20),
   middleName: z.string().default(''),
   lastName: z.string().min(1),
@@ -25,35 +25,28 @@ const localGuardianValidationSchema = z.object({
 });
 
 // Student Schema
-export const studentValidationSchema = z.object({
-  id: z.string().min(1),
+export const createStudentValidationSchema = z.object({
+  body: z.object({
+    password: z.string().max(20),
+    student: z.object({
+      name: userNameValidationSchema,
+    gender: z.enum(['male', 'female', 'other']),
+    dateOfBirth: z.string(),
+    email: z.string().email(),
+    contactNo: z.string(),
+    emergencyContactNo: z.string(),
+    bloodGroup: z
+      .enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']),
+    presentAddress: z.string(),
+    permanentAddress: z.string(),
+    guardian: guardianValidationSchema,
+    localGuardian: localGuardianValidationSchema,
+    profileImg: z.string(),
+    })
 
-  password: z.string().max(20),
-
-  name: userNameValidationchema,
-
-  gender: z.enum(['male', 'female', 'other']),
-
-  dateOfBirth: z.string().default(''),
-
-  email: z.string().email({ message: 'Invalid Email Format' }),
-
-  contactNo: z.string().min(1),
-  emergencyContactNo: z.string().min(1),
-
-  bloodGroup: z
-    .enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'])
-    .optional(),
-  presentAddress: z.string().min(1),
-  permanentAddress: z.string().min(1),
-
-  guardian: guardianValidationSchema,
-  localGuardian: localGuardianValidationSchema,
-
-  profileImg: z.string().default(''),
-
-  isActive: z.enum(['active', 'blocked']).default('active'),
-  isDeleted: z.boolean(),
+  }),
 });
 
-export default studentValidationSchema;
+export const studentValidations = {
+  studentValidationSchema: createStudentValidationSchema,
+};
