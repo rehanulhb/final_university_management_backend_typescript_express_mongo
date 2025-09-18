@@ -1,7 +1,7 @@
-import { model, Schema } from 'mongoose';
-import { TAcademicSemester, TMonth } from './academicSemester.interface';
+import {  model, Schema } from 'mongoose';
+import { TAcademicSemester, TAcademicSemesterCode, TAcademicSemesterName, TMonths } from './academicSemester.interface';
 
-const months: TMonth[] = [
+const Months: TMonths[] = [
 'January',
 'February',
 'March',
@@ -14,7 +14,11 @@ const months: TMonth[] = [
 'October',
 'November',
 'December',
-]
+];
+
+const AcademicSemesterName : TAcademicSemesterName[] = ['Autumn' , 'Summer' , 'Fall'];
+
+const AcademicSemesterCode : TAcademicSemesterCode[] = ['01' , '02' , '03']
 
 
 const academicSemesterSchema = new Schema<TAcademicSemester>(
@@ -22,6 +26,7 @@ const academicSemesterSchema = new Schema<TAcademicSemester>(
     name: {
       type: String,
       required: true,
+      enum: AcademicSemesterName,
     },
     year: {
       type: Date,
@@ -30,22 +35,23 @@ const academicSemesterSchema = new Schema<TAcademicSemester>(
     code: {
       type: String,
       required: true,
+      enum: AcademicSemesterCode,
     },
     startMonth: {
       type: String,
-      enum: ['student', 'faculty', 'admin'],
+      required: true,
+      enum: Months,
     },
-    status: {
+    endMonth: {
       type: String,
-      enum: ['in-progress', 'blocked'],
-      default: 'in-progress',
+      required: true,
+      enum: Months,
     },
-    isDeleted: {
-      type: Boolean,
-      default: false,
-    },
+    
   },
   {
     timestamps: true,
   },
 );
+
+export const AcademicSemester = model<TAcademicSemester>('AcademicSemester', academicSemesterSchema);
