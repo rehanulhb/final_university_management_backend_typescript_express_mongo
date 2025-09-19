@@ -3,22 +3,20 @@ import { NextFunction, Request, RequestHandler, Response } from 'express';
 import sendResponse from '../../utils/sendResponse';
 import status from 'http-status';
 import catchAsync from '../../utils/catchAsync';
+import { AcademicSemesterServices } from './academicSemester.service';
 
 const createAcademicSemester= catchAsync(async (req, res) => {
 
-    //Creating a schema validation using Zod
+    
 
-    //const { password, student: studentData } = req.body;
-
-    // const result = await UserServices.createStudentIntoDB(
-    //   password,
-    //   studentData,
-    // );
+    const result = await AcademicSemesterServices.createAcademicSemesterIntoDB(
+      req.body
+    );
 
     sendResponse(res, {
       statusCode: status.OK,
       success: true,
-      message: 'Student is Created Successfully',
+      message: 'Academic Semester is Created Successfully',
       data: result,
     });
   
