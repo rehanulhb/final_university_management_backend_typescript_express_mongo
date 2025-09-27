@@ -12,7 +12,7 @@ router.post('/create-academic-semester',
 
 //Will Call controller Function
 
- router.get('/:semesterId', AcademicSemesterControllers.getSingleAcademicSemester);
+ router.get('/:semesterId', AcademicSemesterControllers.getSingleAcademicSemester,);
 
  router.patch('/:semesterId', validateRequest(AcademicSemesterValidations.updateAcademicSemesterValidationSchema,), AcademicSemesterControllers.updateAcademicSemester)
 
