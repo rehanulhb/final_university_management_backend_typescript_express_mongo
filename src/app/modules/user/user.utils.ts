@@ -12,8 +12,8 @@ import { User } from "./user.model";
             createdAt: -1,
         }).lean();
 
-        //203001 0001
-        return lastStudent?.id ? lastStudent.id.substring(6) : undefined
+        //2030 01 0001
+        return lastStudent?.id ? lastStudent.id : undefined
     }
 
   
@@ -21,7 +21,18 @@ import { User } from "./user.model";
   export const generateStudentId = async(payload: TAcademicSemester) =>{
 
     //First Time 0000
-    const currentId = await findLastStudentId() || (0).toString();
+    let currentId =  (0).toString(); // 0000 by default
+
+    const lastStudentId = await findLastStudentId();
+    //2030 01 0001
+    const lastStudentSemesterCode = lastStudentId?.substring(4,6); //Semestercode 01
+    const lastStudentYear = lastStudentId?.substring(0,4) //Year =2030
+    const currentSemesterCode = payload.code;
+    const currentYear = payload.year;
+
+    if(lastStudentId && lastStudentSemesterCode === currentSemesterCode && lastStudentYear === currentYear){
+        currentId = lastStudentId.substring(6) //0001
+    }
 
     console.log()
     let incrementId = (Number(currentId) + 1).toString().padStart(4, '0');
