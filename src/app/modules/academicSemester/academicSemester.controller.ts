@@ -6,8 +6,6 @@ import { AcademicSemesterServices } from './academicSemester.service';
 
 const createAcademicSemester= catchAsync(async (req, res) => {
 
-    
-
     const result = await AcademicSemesterServices.createAcademicSemesterIntoDB(
       req.body
     );
@@ -36,7 +34,7 @@ const getAllAcademicSemesters = catchAsync(async (req, res) => {
 
 const getSingleAcademicSemester = catchAsync(async(req, res)=>{
   const {semesterId} = req.params;
-  const result = await AcademicSemesterServices.getSingleAcademicSemesterFromDB(semesterId);
+  const result = await AcademicSemesterServices.getSingleAcademicSemesterFromDB(semesterId!);
 
   sendResponse(res, {
       statusCode: status.OK,
@@ -49,7 +47,7 @@ const getSingleAcademicSemester = catchAsync(async(req, res)=>{
 
 const updateAcademicSemester = catchAsync(async(req, res)=>{
   const {semesterId} = req.params;
-  const result = await AcademicSemesterServices.updateAcademicSemesterIntoDB(semesterId, req.body,);
+  const result = await AcademicSemesterServices.updateAcademicSemesterIntoDB(semesterId!, req.body,);
 
   sendResponse(res, {
       statusCode: status.OK,
@@ -64,5 +62,5 @@ export const AcademicSemesterControllers = {
   createAcademicSemester,
   getSingleAcademicSemester,
   updateAcademicSemester,
-  getAllAcademicSemesters
+  getAllAcademicSemesters,
 };

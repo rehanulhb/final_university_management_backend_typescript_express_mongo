@@ -7,8 +7,8 @@ import { AcademicSemesterValidations } from './academicSemester.validation';
 const router = express.Router();
 
 router.post('/create-academic-semester', 
-    validateRequest(AcademicSemesterValidations.createAcademicSemesterValidationSchema), 
-    AcademicSemesterControllers.createAcademicSemester)
+    validateRequest(AcademicSemesterValidations.createAcademicSemesterValidationSchema,), 
+    AcademicSemesterControllers.createAcademicSemester,)
 
 //Will Call controller Function
 
