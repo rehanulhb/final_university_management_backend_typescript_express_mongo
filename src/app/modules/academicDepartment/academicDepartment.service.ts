@@ -16,12 +16,12 @@ const getAllAcademicDepartmentsFromDB = async()=>{
     return result;
 }
 
-const getSingleAcademicFacultyFromDB = async(id: string)=>{
+const getSingleAcademicDepartmentFromDB = async(id: string)=>{
     const result = await AcademicDepartment.findById(id);
     return result; 
 }
 
-const updateAcademicFacultyIntoDB = async(
+const updateAcademicDepartmentIntoDB = async(
     id: string,
     payload: Partial<TAcademicDepartment>,
 )=>{
@@ -32,9 +32,9 @@ const updateAcademicFacultyIntoDB = async(
     return result;
 }
 
-export const AcademicFacultyServices = {
+export const AcademicDepartmentServices = {
     createAcademicDepartmentIntoDB,
     getAllAcademicDepartmentsFromDB,
-    getSingleAcademicFacultyFromDB,
-    updateAcademicFacultyIntoDB,
+    getSingleAcademicDepartmentFromDB,
+    updateAcademicDepartmentIntoDB,
 }
