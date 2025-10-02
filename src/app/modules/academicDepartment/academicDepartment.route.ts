@@ -7,7 +7,7 @@ import { AcademicDepartmentControllers } from './academicDepartment.controller';
 const router = express.Router();
 
 router.post('/create-academic-department', 
-    validateRequest(AcademicDepartmentValidation.createAcademicDepartmentValidationSchema,), 
+    // validateRequest(AcademicDepartmentValidation.createAcademicDepartmentValidationSchema,), 
     AcademicDepartmentControllers.createAcademicDepartment,)
 
 //Will Call controller Function
