@@ -5,7 +5,7 @@ import { TErrorSources, TGenericErrorResponse } from "../interface/error";
 
     //This Error Needs to Fix from 14-3, where in the latest version there are no Issues in Postman showing
 
-  const errorSources: TErrorSources = err.issues.map((issue: ZodIssue)=>{
+  const errorSources: TErrorSources = err.issues.map((issue: any)=>{
     return {
       path: issue?.path[issue.path.length-1],
       message: issue.message,
