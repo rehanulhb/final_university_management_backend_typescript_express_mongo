@@ -1,7 +1,7 @@
 import { ZodError } from "zod";
-import { TErrorSources } from "../interface/error";
+import { TErrorSources, TGenericErrorResponse } from "../interface/error";
 
-  const handleZodError =(err: ZodError) =>{
+  const handleZodError =(err: ZodError): TGenericErrorResponse =>{
 
     //This Error Needs to Fix from 14-3, where in the latest version there are no Issues in Postman showing
 
