@@ -110,6 +110,7 @@ const deleteCourseFromDB = async(id: string)=>{
 const assignFacultiesWithCourseIntoDB = async(id: string, payload: Partial<TCourseFaculty> ) =>{
     const result = await CourseFaculty.findByIdAndUpdate(id, 
         {
+            course: id,
             $addToSet: {faculties: {$each: payload}},
         },
         {
