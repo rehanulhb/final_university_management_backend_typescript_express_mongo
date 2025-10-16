@@ -7,6 +7,7 @@ import { AcademicSemester } from '../academicSemester/academicSemester.model';
 import { RegistrationStatus } from './semesterRegistration.constant';
 import { TSemesterRegistration } from './semesterRegistration.interface';
 import { SemesterRegistration } from './semesterRegistration.model';
+import { OfferedCourse } from '../OfferedCourse/offeredCourse.model';
 
 const createSemesterRegistrationIntoDB = async (
   payload: TSemesterRegistration,
