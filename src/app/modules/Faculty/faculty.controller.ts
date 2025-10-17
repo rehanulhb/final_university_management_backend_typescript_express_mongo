@@ -3,10 +3,9 @@ import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
 import { FacultyServices } from './faculty.service';
 
-
 const getSingleFaculty = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const result = await FacultyServices.getSingleFacultyFromDB( id as string );
+  const result = await FacultyServices.getSingleFacultyFromDB(id as string);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -17,6 +16,7 @@ const getSingleFaculty = catchAsync(async (req, res) => {
 });
 
 const getAllFaculties = catchAsync(async (req, res) => {
+  console.log('test', req.user);
   const result = await FacultyServices.getAllFacultiesFromDB(req.query);
 
   sendResponse(res, {
@@ -30,7 +30,10 @@ const getAllFaculties = catchAsync(async (req, res) => {
 const updateFaculty = catchAsync(async (req, res) => {
   const { id } = req.params;
   const { faculty } = req.body;
-  const result = await FacultyServices.updateFacultyIntoDB( id as string , faculty);
+  const result = await FacultyServices.updateFacultyIntoDB(
+    id as string,
+    faculty,
+  );
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -41,7 +44,7 @@ const updateFaculty = catchAsync(async (req, res) => {
 });
 
 const deleteFaculty = catchAsync(async (req, res) => {
-  const {  id } = req.params;
+  const { id } = req.params;
   const result = await FacultyServices.deleteFacultyFromDB(id as string);
 
   sendResponse(res, {
