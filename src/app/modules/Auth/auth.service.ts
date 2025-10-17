@@ -3,6 +3,8 @@ import AppError from "../../errors/AppError";
 import { User } from "../user/user.model";
 import { TLoginUser } from "./auth.interface";
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken'
+import config from "../../config";
 
 const loginUser = async (payload: TLoginUser) => {
 
@@ -29,11 +31,23 @@ if(userStatus === 'blocked'){
 }
 
 //Checking if the password is correct
-if(! (await User.isPasswordMatched(payload?.password, user?.password))){
+if(! (await User.isPasswordMatched(payload?.password, user?.password)))
     throw new AppError(status.FORBIDDEN, 'Password do not matched!');
+
+
+//Create Token and sent to the client
+
+const jwtPayload = {
+    userId: user,
+    role: user.role,
 }
 
-
+const AccessToken = jwt.sign(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    {
+        expiresIn: '10d'
+    })
 
 
 //Access Granted: Send AccessToken, RefreshToken
@@ -42,7 +56,7 @@ if(! (await User.isPasswordMatched(payload?.password, user?.password))){
 
 
 
-  return {};
+  return {AccessToken, needsPasswordChange: user?.needsPasswordChange};
   
 };
 
