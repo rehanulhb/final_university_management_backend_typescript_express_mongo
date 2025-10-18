@@ -10,6 +10,7 @@ const loginUser = async (payload: TLoginUser) => {
   // checking if the user is exist
 
   const user = await User.isUserExistsByCustomId(payload.id);
+
   if (!user) {
     throw new AppError(status.NOT_FOUND, 'This user is not found!');
   }
@@ -49,6 +50,14 @@ const loginUser = async (payload: TLoginUser) => {
   return { AccessToken, needsPasswordChange: user?.needsPasswordChange };
 };
 
+const changePassword = (user: { userId: string; role: string }, payload) => {
+  const result = await User.findOneAndUpdate({
+    id: user.userId,
+    role: user.role,
+  });
+};
+
 export const AuthServices = {
   loginUser,
+  changePassword,
 };
