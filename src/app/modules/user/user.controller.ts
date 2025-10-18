@@ -4,25 +4,20 @@ import sendResponse from '../../utils/sendResponse';
 import status from 'http-status';
 import catchAsync from '../../utils/catchAsync';
 
-const createStudent= catchAsync(async (req, res) => {
+const createStudent = catchAsync(async (req, res) => {
+  //Creating a schema validation using Zod
 
-    //Creating a schema validation using Zod
+  const { password, student: studentData } = req.body;
 
-    const { password, student: studentData } = req.body;
+  const result = await UserServices.createStudentIntoDB(password, studentData);
 
-    const result = await UserServices.createStudentIntoDB(
-      password,
-      studentData,
-    );
-
-    sendResponse(res, {
-      statusCode: status.OK,
-      success: true,
-      message: 'Student is Created Successfully',
-      data: result,
-    });
-  
-})
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'Student is Created Successfully',
+    data: result,
+  });
+});
 
 const createAdmin = catchAsync(async (req, res) => {
   const { password, admin: adminData } = req.body;
@@ -37,7 +32,21 @@ const createAdmin = catchAsync(async (req, res) => {
   });
 });
 
+const createFaculty = catchAsync(async (req, res) => {
+  const { password, faculty: facultyData } = req.body;
+
+  const result = await UserServices.createFacultyIntoDB(password, facultyData);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'Faculty is created succesfully',
+    data: result,
+  });
+});
+
 export const UserControllers = {
   createStudent,
-  createAdmin
+  createAdmin,
+  createFaculty,
 };
