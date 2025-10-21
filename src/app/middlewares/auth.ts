@@ -48,6 +48,15 @@ const auth = (...requiredRoles: TUserRole[]) => {
       throw new AppError(status.FORBIDDEN, 'This user is blocked!');
     }
 
+    if (
+      user.passwordChangedAt &&
+      User.isJWTIssuedBeforePasswordChanged(
+        user.passwordChangedAt,
+        iat as number,
+      )
+    ) {
+      throw new AppError(status.UNAUTHORIZED, 'You are not authorized!');
+    }
     if (requiredRoles && !requiredRoles.includes(role)) {
       throw new AppError(status.UNAUTHORIZED, 'You are not authorized!');
     }
