@@ -42,7 +42,7 @@ const loginUser = async (payload: TLoginUser) => {
     role: user.role,
   };
 
-  const AccessToken = createToken(
+  const accessToken = createToken(
     jwtPayload,
     config.jwt_access_secret as string,
     config.jwt_access_expires_in as string,
@@ -57,7 +57,7 @@ const loginUser = async (payload: TLoginUser) => {
   //Access Granted: Send AccessToken, RefreshToken
 
   return {
-    AccessToken,
+    accessToken,
     refreshToken,
     needsPasswordChange: user?.needsPasswordChange,
   };
@@ -114,9 +114,62 @@ const changePassword = async (
   return null;
 };
 
-const RefreshToken = async (token: string) => {};
+const RefreshToken = async (token: string) => {
+  // Check if the givem token is valid
+
+  const decoded = jwt.verify(
+    token,
+    config.jwt_refresh_secret as string,
+  ) as JwtPayload;
+
+  const { userId, iat } = decoded;
+
+  // checking if the user is exist
+
+  const user = await User.isUserExistsByCustomId(userId);
+
+  if (!user) {
+    throw new AppError(status.NOT_FOUND, 'This user is not found!');
+  }
+
+  //Checking if the user is already deleted
+
+  const isDeleted = user?.isDeleted;
+
+  if (isDeleted) {
+    throw new AppError(status.FORBIDDEN, 'This user is deleted!');
+  }
+
+  // //Check if the user is blocked
+  const userStatus = user?.status;
+
+  if (userStatus === 'blocked') {
+    throw new AppError(status.FORBIDDEN, 'This user is blocked!');
+  }
+
+  if (
+    user.passwordChangedAt &&
+    User.isJWTIssuedBeforePasswordChanged(user.passwordChangedAt, iat as number)
+  ) {
+    throw new AppError(status.UNAUTHORIZED, 'You are not authorized!');
+  }
+
+  const jwtPayload = {
+    userId: user.id,
+    role: user.role,
+  };
+
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expires_in as string,
+  );
+
+  return { accessToken };
+};
 
 export const AuthServices = {
   loginUser,
   changePassword,
+  RefreshToken,
 };

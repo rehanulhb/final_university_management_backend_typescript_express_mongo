@@ -6,7 +6,7 @@ import config from '../../config';
 
 const loginUser = catchAsync(async (req, res) => {
   const result = await AuthServices.loginUser(req.body);
-  const { refreshToken, AccessToken, needsPasswordChange } = result;
+  const { refreshToken, accessToken, needsPasswordChange } = result;
 
   res.cookie('refreshToken', refreshToken, {
     secure: config.NODE_ENV === 'production',
@@ -18,7 +18,7 @@ const loginUser = catchAsync(async (req, res) => {
     success: true,
     message: 'User is logged in succesfully!',
     data: {
-      AccessToken,
+      accessToken,
       needsPasswordChange,
     },
   });
@@ -38,7 +38,20 @@ const changePassword = catchAsync(async (req, res) => {
   });
 });
 
+const refreshToken = catchAsync(async (req, res) => {
+  const { refreshToken } = req.cookies;
+  const result = await AuthServices.RefreshToken(refreshToken);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'Access token is retrieved succesfully!',
+    data: result,
+  });
+});
+
 export const AuthControllers = {
   loginUser,
   changePassword,
+  refreshToken,
 };
