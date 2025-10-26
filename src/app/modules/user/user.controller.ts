@@ -3,6 +3,7 @@ import { UserServices } from './user.service';
 import sendResponse from '../../utils/sendResponse';
 import status from 'http-status';
 import catchAsync from '../../utils/catchAsync';
+import AppError from '../../errors/AppError';
 
 const createStudent = catchAsync(async (req, res) => {
   //Creating a schema validation using Zod
@@ -45,8 +46,24 @@ const createFaculty = catchAsync(async (req, res) => {
   });
 });
 
+const getMe = catchAsync(async (req, res) => {
+  const token = req.headers.authorization;
+  if (!token) {
+    throw new AppError(status.NOT_FOUND, 'Token not found!');
+  }
+  const result = await UserServices.getMe(token);
+
+  sendResponse(res, {
+    statusCode: status.OK,
+    success: true,
+    message: 'Data Retrieved succesfully',
+    data: result,
+  });
+});
+
 export const UserControllers = {
   createStudent,
   createAdmin,
   createFaculty,
+  getMe,
 };
