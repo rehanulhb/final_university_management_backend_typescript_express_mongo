@@ -6,6 +6,8 @@ import catchAsync from '../../utils/catchAsync';
 import AppError from '../../errors/AppError';
 
 const createStudent = catchAsync(async (req, res) => {
+  console.log(req.file);
+
   //Creating a schema validation using Zod
 
   const { password, student: studentData } = req.body;

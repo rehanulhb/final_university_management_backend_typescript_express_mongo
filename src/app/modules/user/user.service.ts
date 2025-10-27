@@ -20,6 +20,7 @@ import { Admin } from '../Admin/admin.model';
 import { TAdmin } from '../Admin/admin.interface';
 import { verifyToken } from '../Auth/auth.utils';
 import { USER_ROLE } from './user.constant';
+import { sendImageToCloudinary } from '../../utils/sendImageToCloudinary';
 
 const createStudentIntoDB = async (password: string, payload: TStudent) => {
   //Create a User object
@@ -45,6 +46,9 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     session.startTransaction();
     //set auto generated id
     userData.id = await generateStudentId(admissionSemester);
+
+    //Send Image to Cloudinary
+    sendImageToCloudinary();
 
     //create a user(Transaction 1)
     const newUser = await User.create([userData], { session }); //array
