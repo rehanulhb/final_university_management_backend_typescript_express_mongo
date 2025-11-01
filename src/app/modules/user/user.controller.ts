@@ -27,7 +27,11 @@ const createStudent = catchAsync(async (req, res) => {
 const createAdmin = catchAsync(async (req, res) => {
   const { password, admin: adminData } = req.body;
 
-  const result = await UserServices.createAdminIntoDB(password, adminData);
+  const result = await UserServices.createAdminIntoDB(
+    req.file,
+    password,
+    adminData,
+  );
 
   sendResponse(res, {
     statusCode: status.OK,
@@ -40,7 +44,11 @@ const createAdmin = catchAsync(async (req, res) => {
 const createFaculty = catchAsync(async (req, res) => {
   const { password, faculty: facultyData } = req.body;
 
-  const result = await UserServices.createFacultyIntoDB(password, facultyData);
+  const result = await UserServices.createFacultyIntoDB(
+    req.file,
+    password,
+    facultyData,
+  );
 
   sendResponse(res, {
     statusCode: status.OK,
@@ -51,11 +59,6 @@ const createFaculty = catchAsync(async (req, res) => {
 });
 
 const getMe = catchAsync(async (req, res) => {
-  // const token = req.headers.authorization;
-  // if (!token) {
-  //   throw new AppError(status.NOT_FOUND, 'Token not found!');
-  // }
-
   const { userId, role } = req.user;
   const result = await UserServices.getMe(userId, role);
 
