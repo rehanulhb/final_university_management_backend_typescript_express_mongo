@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import { BloodGroup, Gender } from './admin.constant';
 
-
 const createUserNameValidationSchema = z.object({
   firstName: z.string().min(1).max(20),
   middleName: z.string().max(20),
@@ -22,7 +21,7 @@ export const createAdminValidationSchema = z.object({
       bloodGroup: z.enum([...BloodGroup] as [string, ...string[]]),
       presentAddress: z.string(),
       permanentAddress: z.string(),
-      profileImg: z.string(),
+      profileImg: z.string().optional(),
     }),
   }),
 });
